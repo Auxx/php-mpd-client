@@ -42,7 +42,7 @@ class MpdCmdMove extends MpdCommand {
 
 class MpdCmdMoveId extends MpdCommand {
 	function __construct($id, $to) {
-		parent::__construct('moveid', array($id));
+		parent::__construct('moveid', array($id, $to));
 	}
 }
 
@@ -53,13 +53,13 @@ class MpdCmdPlaylistFind extends MpdCommand {
 }
 
 class MpdCmdPlaylistId extends MpdCommand {
-	function __construct($id) {
+	function __construct($id = null) {
 		parent::__construct('playlistid', array($id));
 	}
 }
 
 class MpdCmdPlaylistInfo extends MpdCommand {
-	function __construct($start, $end = null) {
+	function __construct($start = null, $end = null) {
 		parent::__construct('playlistinfo', array($end === null ? $start : $start.':'.$end));
 	}
 }

@@ -8,6 +8,7 @@ class PhpMpdManager {
 	const STATUS_WRAPPER = 'status';
 	const PLAYBACK_OPTS_WRAPPER = 'playbackOptions';
 	const PLAYBACK_WRAPPER = 'playback';
+	const PLAYLIST_WRAPPER = 'playlist';
 
 	function __construct(PhpMpdClient $client) {
 		$this->client = $client;
@@ -18,6 +19,7 @@ class PhpMpdManager {
 			case self::STATUS_WRAPPER:
 			case self::PLAYBACK_OPTS_WRAPPER:
 			case self::PLAYBACK_WRAPPER:
+			case self::PLAYLIST_WRAPPER:
 				return($this->getWrapper($name));
 		}
 	}
@@ -33,6 +35,7 @@ class PhpMpdManager {
 			case self::STATUS_WRAPPER: return(new MpdStatusWrapper($this->client));
 			case self::PLAYBACK_OPTS_WRAPPER: return(new MpdPlaybackOptsWrapper($this->client));
 			case self::PLAYBACK_WRAPPER: return(new MpdPlaybackWrapper($this->client));
+			case self::PLAYLIST_WRAPPER: return(new MpdPlaylistWrapper($this->client));
 		}
 	}
 }
@@ -140,6 +143,48 @@ class MpdPlaybackWrapper extends MpdCommandsWrapper {
 
 	function stop() {
 		return($this->client->execute(new MpdCmdStop()));
+	}
+}
+
+class MpdPlaylistWrapper extends MpdCommandsWrapper {
+	function add($uri) {
+		return($this->client->execute(new MpdCmdAdd($uri)));
+	}
+
+	function addWithId($uri, $position = null) {
+		return($this->client->execute(new MpdCmdAddId($uri, $position)));
+	}
+
+	function clear() {
+		return($this->client->execute(new MpdCmdClear()));
+	}
+
+	function delete($start, $end = null) {
+		return($this->client->execute(new MpdCmdDelete($start, $end)));
+	}
+
+	function deleteById($id) {
+		return($this->client->execute(new MpdCmdDeleteId($id)));
+	}
+
+	function move($start, $to, $end = null) {
+		return($this->client->execute(new MpdCmdMove($start, $to, $end)));
+	}
+
+	function moveById($id, $to) {
+		return($this->client->execute(new MpdCmdMoveId($id, $to)));
+	}
+
+	function find($tag, $needle) {
+		return($this->client->execute(new MpdCmdPlaylistFind($tag, $needle)));
+	}
+
+	function getExtendedInfo($id = null) {
+		return($this->client->execute(new MpdCmdPlaylistId($id)));
+	}
+
+	function getInfo($start = null, $end = null) {
+		return($this->client->execute(new MpdCmdPlaylistInfo($start, $end)));
 	}
 }
 
