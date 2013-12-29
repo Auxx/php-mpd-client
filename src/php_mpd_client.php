@@ -123,7 +123,7 @@ class PhpMpdClient {
 				$continue = false;
 				$array = explode(self::MPD_DELIMITER, $line, 4);
 				$codeAndLine = explode("@", $array[1]);
-				throw new MpdException($array[3], substr($codeAndLine[0], 1), substr($codeAndLine[1], 0, -1), substr($array[2], 1, strlen($array[2] - 3)));
+				throw new MpdException($array[3], substr($codeAndLine[0], 1), substr($codeAndLine[1], 0, -1), substr($array[2], 1, strlen($array[2]) - 2));
 			}
 			else {
 				$response[] = $line;
