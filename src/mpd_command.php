@@ -42,7 +42,9 @@ class MpdCommand {
 	function makeQuery() {
 		$query = $this->command;
 		foreach($this->arguments as $argument) {
-			$query .= PhpMpdClient::MPD_DELIMITER.$this->escape($argument);
+			if($argument !== null) {
+				$query .= PhpMpdClient::MPD_DELIMITER.$this->escape($argument);
+			}
 		}
 		return($query.PhpMpdClient::MPD_LINE_ENDING);
 	}
