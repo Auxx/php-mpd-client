@@ -16,12 +16,13 @@ class PhpMpdClient {
 	const MPD_LINE_ENDING = "\n";
 	const MPD_OK = 'OK';
 	const MPD_SIGN = 'MPD';
+	const MPD_ACK = 'ACK';
 	const MPD_DELIMITER = ' ';
 
 	protected $host, $port, $protocol, $socket = false,
 	          $mpdProtocolVersion;
 
-	function __construct($host = self::DEFAULT_HOST, $port = self::DEFAULT_POST, $autoConnect = true) {
+	function __construct(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_POST, boolean $autoConnect = true) {
 		$this->host = $host;
 		$this->port = $port;
 		$this->protocol = self::DEFAULT_PROTOCOL;
@@ -34,9 +35,9 @@ class PhpMpdClient {
 		$this->disconnect();
 	}
 
-	function setProtocol($protocol) {	$this->protocol = $protocol; }
-	function setHost($host) {	$this->host = $host; }
-	function setPort($port) {	$this->port = $port; }
+	function setProtocol(string $protocol) {	$this->protocol = $protocol; }
+	function setHost(string $host) {	$this->host = $host; }
+	function setPort(int $port) {	$this->port = $port; }
 
 	function getProtocol() { return($this->protocol); }
 	function getHost() { return($this->host); }
@@ -83,6 +84,11 @@ class PhpMpdClient {
 		return($this->socket !== false);
 	}
 
+	function execute(MpdCommand $command) {
+		fwrite($this->socket, $command->makeQuery());
+		$command->processResponse($this->readResponse());
+	}
+
 	protected function readLine() {
 		if($this->socket === false) {
 			// TODO Move magic string to constant
@@ -106,7 +112,24 @@ class PhpMpdClient {
 	}
 
 	protected function readResponse() {
-		// TODO
+		$response = array();
+		$continue = true;
+		do {
+			$line = $this->readLine();
+			if($line === self::MPD_OK) {
+				$continue = false;
+			}
+			else if(strpos($line, self::MPD_ACK) === 0) {
+				$continue = false;
+				$array = explode(self::MPD_DELIMITER, $line, 4);
+				$codeAndLine = explode("@", $array[1]);
+				throw new MpdException($array[3], substr($codeAndLine[0], 1), substr($codeAndLine[1], 0, -1), substr($array[2], 1, strlen($array[2] - 2)));
+			}
+			else {
+				$response[] = $line;
+			}
+		} while($continue);
+		return($response);
 	}
 }
 
