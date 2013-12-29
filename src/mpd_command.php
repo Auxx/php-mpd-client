@@ -1,7 +1,7 @@
 <?php
 
 class MpdCommand {
-	protected $command, $arguments;
+	protected $command, $arguments, $data = array();
 
 	function __construct($command = '', $arguments = array()) {
 		$this->command = $command;
@@ -48,8 +48,28 @@ class MpdCommand {
 	}
 
 	function processResponse($response) {
+		// TODO Fix it!
 		print_r($response);
-		// TODO
+
+		$this->data = array();
+		foreach($response as $line) {
+			$array = explode(': ', $line, 2);
+			$key = strtolower($array[0]);
+			$this->data[$key] = $array[1];
+		}
+	}
+
+	function getData($key) {
+		if(isset($this->data[$key])) {
+			return($this->data[$key]);
+		}
+		else {
+			return(null);
+		}
+	}
+
+	function __get($key) {
+		return($this->getData($key));
 	}
 }
 

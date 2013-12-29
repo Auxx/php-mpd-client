@@ -2,6 +2,7 @@
 
 require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_exception.php';
 require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_command.php';
+require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_status_commands.php';
 
 class PhpMpdClient {
 	const PROTOCOL_TCP = 'tcp';
