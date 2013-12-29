@@ -5,7 +5,6 @@ require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_command.php';
 require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_status_commands.php';
 require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_playback_opt_commands.php';
 require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mpd_playback_commands.php';
-require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'php_mpd_manager.php';
 
 class PhpMpdClient {
 	const PROTOCOL_TCP = 'tcp';

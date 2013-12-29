@@ -1,10 +1,13 @@
 <?php
 
+require_once realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'php_mpd_client.php';
+
 class PhpMpdManager {
 	protected $client, $wrappers = array();
 
 	const STATUS_WRAPPER = 'status';
 	const PLAYBACK_OPTS_WRAPPER = 'playbackOptions';
+	const PLAYBACK_WRAPPER = 'playback';
 
 	function __construct(PhpMpdClient $client) {
 		$this->client = $client;
@@ -14,6 +17,7 @@ class PhpMpdManager {
 		switch($name) {
 			case self::STATUS_WRAPPER:
 			case self::PLAYBACK_OPTS_WRAPPER:
+			case self::PLAYBACK_WRAPPER:
 				return($this->getWrapper($name));
 		}
 	}
@@ -28,6 +32,7 @@ class PhpMpdManager {
 		switch($name) {
 			case self::STATUS_WRAPPER: return(new MpdStatusWrapper($this->client));
 			case self::PLAYBACK_OPTS_WRAPPER: return(new MpdPlaybackOptsWrapper($this->client));
+			case self::PLAYBACK_WRAPPER: return(new MpdPlaybackWrapper($this->client));
 		}
 	}
 }
@@ -98,6 +103,10 @@ class MpdPlaybackOptsWrapper extends MpdCommandsWrapper {
 	function getReplayGainMode() {
 		return($this->client->execute(new MpdCmdReplayGainStatus()));
 	}
+}
+
+class MpdPlaybackWrapper extends MpdCommandsWrapper {
+
 }
 
 ?>
