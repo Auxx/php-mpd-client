@@ -106,7 +106,41 @@ class MpdPlaybackOptsWrapper extends MpdCommandsWrapper {
 }
 
 class MpdPlaybackWrapper extends MpdCommandsWrapper {
+	function next() {
+		return($this->client->execute(new MpdCmdNext()));
+	}
 
+	function pause($enabled) {
+		return($this->client->execute(new MpdCmdPause($enabled)));
+	}
+
+	function play($id) {
+		return($this->client->execute(new MpdCmdPlay($id)));
+	}
+
+	function playById($id) {
+		return($this->client->execute(new MpdCmdPlayId($id)));
+	}
+
+	function previous() {
+		return($this->client->execute(new MpdCmdPrevious()));
+	}
+
+	function seek($id, $time) {
+		return($this->client->execute(new MpdCmdSeek($id, $time)));
+	}
+
+	function seekById($id, $time) {
+		return($this->client->execute(new MpdCmdSeekId($id, $time)));
+	}
+
+	function seekCurrent($time) {
+		return($this->client->execute(new MpdCmdSeekCurrent($id, $time)));
+	}
+
+	function stop() {
+		return($this->client->execute(new MpdCmdStop()));
+	}
 }
 
 ?>
