@@ -3,7 +3,7 @@
 class MpdException extends Exception {
 	protected $mpdLine, $mpdCommand;
 
-	function __construct($message = '', $code = 0, $mpdLine = 0, $mpdCommand = '', $previous = NULL) {
+	function __construct(string $message = '', int $code = 0, int $mpdLine = 0, string $mpdCommand = '', Exception $previous = NULL) {
 		parent::__construct($message, $code, $previous);
 		$this->mpdLine = $mpdLine;
 		$this->mpdCommand = $mpdCommand;
