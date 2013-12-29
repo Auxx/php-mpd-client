@@ -22,7 +22,7 @@ class PhpMpdClient {
 	protected $host, $port, $protocol, $socket = false,
 	          $mpdProtocolVersion;
 
-	function __construct(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_POST, boolean $autoConnect = true) {
+	function __construct($host = self::DEFAULT_HOST, $port = self::DEFAULT_POST, $autoConnect = true) {
 		$this->host = $host;
 		$this->port = $port;
 		$this->protocol = self::DEFAULT_PROTOCOL;
@@ -35,9 +35,9 @@ class PhpMpdClient {
 		$this->disconnect();
 	}
 
-	function setProtocol(string $protocol) {	$this->protocol = $protocol; }
-	function setHost(string $host) {	$this->host = $host; }
-	function setPort(int $port) {	$this->port = $port; }
+	function setProtocol($protocol) {	$this->protocol = $protocol; }
+	function setHost($host) {	$this->host = $host; }
+	function setPort($port) {	$this->port = $port; }
 
 	function getProtocol() { return($this->protocol); }
 	function getHost() { return($this->host); }

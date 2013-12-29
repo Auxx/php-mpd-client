@@ -3,16 +3,16 @@
 class MpdCommand {
 	protected $command, $arguments;
 
-	function __construct(string $command = '', array $arguments = array()) {
+	function __construct($command = '', $arguments = array()) {
 		$this->command = $command;
 		$this->arguments = $arguments;
 	}
 
-	function setCommand(string $command) {	$this->command = $command; }
+	function setCommand($command) {	$this->command = $command; }
 	function getCommand() {	return($this->command); }
 	function getArguments() {	return($this->arguments); }
 
-	function setArguments(mixed $arguments) {
+	function setArguments($arguments) {
 		if(is_array($arguments)) {
 			$this->arguments = $arguments;
 		}
@@ -21,7 +21,7 @@ class MpdCommand {
 		}
 	}
 
-	function addArguments(mixed $arguments) {
+	function addArguments($arguments) {
 		if(is_array($arguments)) {
 			$this->arguments = array_merge($this->arguments, $arguments);
 		}
@@ -30,7 +30,7 @@ class MpdCommand {
 		}
 	}
 
-	function escape(string $string) {
+	function escape($string) {
 		if(strpos($string, PhpMpdClient::MPD_DELIMITER) !== false) {
 			return('"'.  str_replace('"', '\\"', $string).'"');
 		}
@@ -47,7 +47,8 @@ class MpdCommand {
 		return($query.PhpMpdClient::MPD_LINE_ENDING);
 	}
 
-	function processResponse(array $response) {
+	function processResponse($response) {
+		print_r($response);
 		// TODO
 	}
 }
