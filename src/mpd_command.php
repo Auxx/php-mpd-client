@@ -51,6 +51,7 @@ class MpdCommand {
 
 	function processResponse($response) {
 		// TODO Fix it!
+		// TODO Process arrays too!
 		print_r($response);
 
 		$this->data = array();
