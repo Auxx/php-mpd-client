@@ -66,16 +66,6 @@ class PhpMpdClient {
 		throw new InvalidArgumentException('Service is not MPD');
 	}
 
-	function connect_silent() {
-		try {
-			$this->connect();
-			return(true);
-		}
-		catch(UnexpectedValueException $e) {
-			return(false);
-		}
-	}
-
 	function disconnect() {
 		if($this->isConnected()) {
 			fclose($this->socket);
@@ -88,13 +78,28 @@ class PhpMpdClient {
 	}
 
 	function execute(MpdCommand $command) {
+		if(!$this->isConnected()) {
+			// TODO Move magic string to constant
+			throw new InvalidArgumentException("Not connected.");
+		}
+
 		fwrite($this->socket, $command->makeQuery());
 		$command->processResponse($this->readResponse());
 		return($command);
 	}
 
+	function executeRaw($query) {
+		if(!$this->isConnected()) {
+			// TODO Move magic string to constant
+			throw new InvalidArgumentException("Not connected.");
+		}
+
+		fwrite($this->socket, $query);
+		return($this->readResponse());
+	}
+
 	protected function readLine() {
-		if($this->socket === false) {
+		if(!$this->isConnected()) {
 			// TODO Move magic string to constant
 			throw new InvalidArgumentException("Not connected.");
 		}
