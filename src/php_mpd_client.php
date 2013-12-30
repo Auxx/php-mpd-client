@@ -84,8 +84,6 @@ class PhpMpdClient {
 		}
 
 		$command->processResponse($this->executeRaw($command->makeQuery()));
-//		fwrite($this->socket, $command->makeQuery());
-//		$command->processResponse($this->readResponse());
 		return($command);
 	}
 
