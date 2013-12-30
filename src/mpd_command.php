@@ -50,10 +50,6 @@ class MpdCommand {
 	}
 
 	function processResponse($response) {
-		// TODO Fix it!
-		// TODO Process arrays too!
-		print_r($response);
-
 		$this->data = array();
 		foreach($response as $line) {
 			$array = explode(': ', $line, 2);
@@ -73,6 +69,38 @@ class MpdCommand {
 
 	function __get($key) {
 		return($this->getData($key));
+	}
+}
+
+class MpdArrayCommand extends MpdCommand {
+	function processResponse($response) {
+		$this->data = array();
+		$item = array();
+		foreach($response as $line) {
+			$array = explode(': ', $line, 2);
+			$key = strtolower($array[0]);
+
+			if(isset($item[$key])) {
+				$this->data[] = $item;
+				$item = array();
+			}
+
+			$item[$key] = $array[1];
+		}
+		$this->data[] = $item;
+	}
+
+	function length() {
+		return(count($this->data));
+	}
+
+	function getData($key) {
+		// TODO Add exception for out of bounds situation
+		return($this->data[$key]);
+	}
+
+	function all() {
+		return($this->data);
 	}
 }
 
