@@ -83,8 +83,9 @@ class PhpMpdClient {
 			throw new InvalidArgumentException("Not connected.");
 		}
 
-		fwrite($this->socket, $command->makeQuery());
-		$command->processResponse($this->readResponse());
+		$command->processResponse($this->executeRaw($command->makeQuery()));
+//		fwrite($this->socket, $command->makeQuery());
+//		$command->processResponse($this->readResponse());
 		return($command);
 	}
 
